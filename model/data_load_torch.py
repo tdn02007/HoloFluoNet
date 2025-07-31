@@ -16,28 +16,25 @@ class DatasetLoader(Dataset):
         self.is_train = is_train
 
         if self.is_train:
-            self.input_dir1 = "/sdc/seonghwan/LiveDead/project/data/raw_train_data/phase/"
-            self.label_dir1 = "/sdc/seonghwan/LiveDead/project/data/raw_train_data/background/"
-            self.label_dir2 = "/sdc/seonghwan/LiveDead/project/data/raw_train_data/live/"
-            self.label_dir3 = "/sdc/seonghwan/LiveDead/project/data/raw_train_data/dead/"
-            self.label_dir4 = "/sdc/seonghwan/LiveDead/project/data/raw_train_data/nuclei/"
-            self.boundary_dir1 = "/sdc/seonghwan/LiveDead/project/data/raw_train_data/boundary/"
-            self.distance_dir1 = "/sdc/seonghwan/LiveDead/project/data/raw_train_data/distance/"
+            self.input_dir1 = "../data/train_data/phase/"
+            self.label_dir1 = "../data/train_data/background/"
+            self.label_dir2 = "../data/train_data/live/"
+            self.label_dir3 = "../data/train_data/dead/"
+            self.label_dir4 = "../data/train_data/nuclei/"
+            self.distance_dir1 = "../data/train_data/distance/"
         else:
-            self.input_dir1 = "/sdc/seonghwan/LiveDead/project/data/raw_test_data/phase/"
-            self.label_dir1 = "/sdc/seonghwan/LiveDead/project/data/raw_test_data/background/"
-            self.label_dir2 = "/sdc/seonghwan/LiveDead/project/data/raw_test_data/live/"
-            self.label_dir3 = "/sdc/seonghwan/LiveDead/project/data/raw_test_data/dead/"
-            self.label_dir4 = "/sdc/seonghwan/LiveDead/project/data/raw_test_data/nuclei/"
-            self.boundary_dir1 = "/sdc/seonghwan/LiveDead/project/data/raw_test_data/boundary/"
-            self.distance_dir1 = "/sdc/seonghwan/LiveDead/project/data/raw_test_data/distance/"
+            self.input_dir1 = "../data/test_data/phase/"
+            self.label_dir1 = "../data/test_data/background/"
+            self.label_dir2 = "../data/test_data/live/"
+            self.label_dir3 = "../data/test_data/dead/"
+            self.label_dir4 = "../data/test_data/nuclei/"
+            self.distance_dir1 = "../data/test_data/distance/"
 
         self.input_images1 = sorted(os.listdir(self.input_dir1))
         self.label_images1 = sorted(os.listdir(self.label_dir1))
         self.label_images2 = sorted(os.listdir(self.label_dir2))
         self.label_images3 = sorted(os.listdir(self.label_dir3))
 
-        self.boundary_images1 = sorted(os.listdir(self.boundary_dir1))
         self.distance_images1 = sorted(os.listdir(self.distance_dir1))
 
     @classmethod
@@ -98,12 +95,6 @@ class DatasetLoader(Dataset):
 
         label_image = np.concatenate((label_image, label_image4), axis=0)
 
-        boundary_name1 = self.boundary_images1[index]
-        boundary_file1 = glob(self.boundary_dir1 + boundary_name1)
-        boundary_image1 = np.array(Image.open(boundary_file1[0]).resize((256, 256)))
-        boundary_image1 = np.where(boundary_image1 == 255, 1, 0).astype(np.float32)
-        boundary_image1 = self.preprocess(boundary_image1, False)
-
         distance_name1 = self.distance_images1[index]
         distance_file1 = glob(self.distance_dir1 + distance_name1)
         distance_image1 = np.array(Image.open(distance_file1[0]).resize((256, 256)))
@@ -113,6 +104,5 @@ class DatasetLoader(Dataset):
         return {
             "input_image": torch.from_numpy(input_image).float(),
             "label_image": torch.from_numpy(label_image).float(),
-            "boundary_image": torch.from_numpy(boundary_image1).float(),
             "distance_image": torch.from_numpy(distance_image1).float(),
         }

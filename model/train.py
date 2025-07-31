@@ -1,15 +1,19 @@
-from data_load_torch import DatasetLoader
 import os
 import sys
 import argparse
+
 import torch
 import torch.nn as nn
 from torch import optim
 from torch.utils.data import DataLoader
 import torch.nn.functional as F
-from network import FPN, Discriminator
+
 from tqdm import tqdm
+from pytorch_msssim import ssim
+
+from network import FPN, Discriminator
 from loss_torch import InclusionLoss, ExclusionLoss, GANLoss, DiceCELoss
+from data_load_torch import DatasetLoader
 
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
@@ -236,7 +240,7 @@ if __name__ == '__main__':
     parser.add_argument('--inclusion', type=bool, default=True)
     parser.add_argument('--exclusion', type=bool, default=True)
 
-    parser.add_argument('--batch_size', type=int, default=8, help='input batch size')
+    parser.add_argument('--batch_size', type=int, default=24, help='input batch size')
     parser.add_argument('--num_epoch', type=int, default=100)
 
     parser.add_argument('--lr_g', type=float, default=0.001, help='learning rate g')
