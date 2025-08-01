@@ -2,17 +2,17 @@ from PIL import Image
 import os
 import numpy as np
 
-file_name = "HoloFuloNet"
-data_type = ["input", "background", "live", "dead", "nuclei"]
+file_name = "HoloFluoNet"
+data_type = ["input", "background", "live", "dead", "nuclei", "distance"]
 
 def split_image(image_path, data_name, save_path):
     image = Image.open(image_path).convert("L")
     img_width, img_height = image.size
     
-    single_width = img_width // 5
+    single_width = img_width // 6
     
     # Split and save the images
-    for i in range(5):
+    for i in range(6):
         left = i * single_width
         right = (i + 1) * single_width
         box = (left, 0, right, img_height)

@@ -5,7 +5,6 @@ import torch.nn.functional as F
 import torchvision
 
 from tqdm import tqdm
-from collections import OrderedDict
 from pytorch_msssim import ssim
 
 from data_load_torch import DatasetLoader
